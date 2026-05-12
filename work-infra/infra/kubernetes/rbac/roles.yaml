@@ -1,0 +1,63 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+  namespace: aasop
+  labels:
+    app.kubernetes.io/name: rbac
+    app.kubernetes.io/component: auth
+    app.kubernetes.io/part-of: aasop
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: configmap-reader
+  namespace: aasop
+  labels:
+    app.kubernetes.io/name: rbac
+    app.kubernetes.io/component: auth
+    app.kubernetes.io/part-of: aasop
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: agent-runtime-pod-reader
+  namespace: aasop
+  labels:
+    app.kubernetes.io/name: rbac
+    app.kubernetes.io/component: auth
+    app.kubernetes.io/part-of: aasop
+subjects:
+  - kind: ServiceAccount
+    name: agent-runtime
+    namespace: aasop
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: workflow-worker-configmap-reader
+  namespace: aasop
+  labels:
+    app.kubernetes.io/name: rbac
+    app.kubernetes.io/component: auth
+    app.kubernetes.io/part-of: aasop
+subjects:
+  - kind: ServiceAccount
+    name: workflow-worker
+    namespace: aasop
+roleRef:
+  kind: Role
+  name: configmap-reader
+  apiGroup: rbac.authorization.k8s.io

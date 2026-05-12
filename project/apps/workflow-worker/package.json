@@ -1,0 +1,29 @@
+{
+  "name": "@aasop/workflow-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "lint": "eslint src/**/*.ts"
+  },
+  "dependencies": {
+    "@aasop/shared-kernel": "workspace:*",
+    "@aasop/model-router": "workspace:*",
+    "@aasop/observability": "workspace:*",
+    "@temporalio/worker": "^1.9.0",
+    "@temporalio/workflow": "^1.9.0",
+    "@temporalio/activity": "^1.9.0",
+    "@temporalio/client": "^1.9.0",
+    "@temporalio/common": "^1.9.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "tsx": "^4.7.0",
+    "@types/node": "^20.11.0"
+  }
+}

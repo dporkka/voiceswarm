@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@layer base {
+  :root {
+    --background: 220 13% 9%;
+    --foreground: 210 20% 96%;
+    --card: 220 13% 11%;
+    --card-foreground: 210 20% 96%;
+    --popover: 220 13% 12%;
+    --popover-foreground: 210 20% 96%;
+    --primary: 158 64% 41%;
+    --primary-foreground: 155 100% 97%;
+    --secondary: 220 10% 16%;
+    --secondary-foreground: 210 20% 96%;
+    --muted: 220 10% 16%;
+    --muted-foreground: 217 10% 58%;
+    --accent: 220 10% 16%;
+    --accent-foreground: 210 20% 96%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 10% 18%;
+    --input: 220 10% 18%;
+    --ring: 158 64% 41%;
+    --radius: 0.75rem;
+    --sidebar: 220 13% 10%;
+    --sidebar-foreground: 210 20% 96%;
+    --sidebar-border: 220 10% 16%;
+    --sidebar-accent: 158 64% 41%;
+    --sidebar-accent-foreground: 155 100% 97%;
+    --chart-1: 158 64% 41%;
+    --chart-2: 199 89% 48%;
+    --chart-3: 35 92% 33%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+  }
+
+  ::selection {
+    @apply bg-primary/30 text-primary-foreground;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/20 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/40;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gradient-primary {
+    @apply bg-gradient-to-r from-primary-600 to-primary-400;
+  }
+
+  .glass {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50;
+  }
+
+  .glow-primary {
+    box-shadow: 0 0 20px -5px hsl(158 64% 41% / 0.4);
+  }
+
+  .glow-success {
+    box-shadow: 0 0 20px -5px hsl(142 71% 45% / 0.4);
+  }
+
+  .glow-warning {
+    box-shadow: 0 0 20px -5px hsl(38 92% 50% / 0.4);
+  }
+
+  .glow-error {
+    box-shadow: 0 0 20px -5px hsl(0 84% 60% / 0.4);
+  }
+}

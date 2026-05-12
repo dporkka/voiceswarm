@@ -1,0 +1,27 @@
+{
+  "name": "@aasop/voice-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "lint": "eslint src/**/*.ts"
+  },
+  "dependencies": {
+    "@aasop/shared-kernel": "workspace:*",
+    "@aasop/observability": "workspace:*",
+    "@deepgram/sdk": "^3.2.0",
+    "openai": "^4.28.0",
+    "ws": "^8.16.0",
+    "pino": "^8.17.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "tsx": "^4.7.0",
+    "@types/node": "^20.11.0",
+    "@types/ws": "^8.5.10"
+  }
+}

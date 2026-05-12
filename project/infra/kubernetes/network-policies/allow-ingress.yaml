@@ -1,0 +1,81 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-api
+  namespace: aasop
+  labels:
+    app.kubernetes.io/name: allow-ingress-api
+    app.kubernetes.io/component: network-policy
+    app.kubernetes.io/part-of: aasop
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: api
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 4000
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: aasop
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: prometheus
+      ports:
+        - protocol: TCP
+          port: 4000
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-web
+  namespace: aasop
+  labels:
+    app.kubernetes.io/name: allow-ingress-web
+    app.kubernetes.io/component: network-policy
+    app.kubernetes.io/part-of: aasop
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: web
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-realtime
+  namespace: aasop
+  labels:
+    app.kubernetes.io/name: allow-ingress-realtime
+    app.kubernetes.io/component: network-policy
+    app.kubernetes.io/part-of: aasop
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: realtime
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 4300

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aasop
+  labels:
+    name: aasop
+    app.kubernetes.io/name: aasop
+    app.kubernetes.io/component: platform
+    istio-injection: enabled
+  annotations:
+    description: "AASOP - Autonomous Agentic Software Organization Platform"

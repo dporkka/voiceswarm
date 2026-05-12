@@ -1,0 +1,524 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== Users & Organizations ====================
+
+model User {
+  id            String          @id @default(uuid()) @db.Uuid
+  email         String          @unique
+  name          String
+  displayName   String?
+  avatarUrl     String?
+  status        UserStatus      @default(ACTIVE)
+  role          UserRole        @default(ORG_MEMBER)
+  preferences   Json            @default("{}")
+  lastLoginAt   DateTime?
+  emailVerified Boolean         @default(false)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  orgMemberships OrgMembership[]
+  auditLogs      AuditLog[]
+  apiKeys        ApiKey[]
+  ownedOrgs      Organization[]  @relation("OrgOwner")
+  ownedProjects  Project[]       @relation("ProjectOwner")
+
+  @@index([email])
+  @@index([status])
+  @@map("users")
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ORG_ADMIN
+  ORG_MEMBER
+  VIEWER
+  SERVICE
+}
+
+model Organization {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String
+  slug        String   @unique
+  description String   @default("")
+  ownerId     String   @db.Uuid
+  settings    Json     @default("{}")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  owner       User            @relation("OrgOwner", fields: [ownerId], references: [id])
+  memberships OrgMembership[]
+  projects    Project[]
+  agents      Agent[]
+  tasks       Task[]
+  auditLogs   AuditLog[]
+  apiKeys     ApiKey[]
+
+  @@index([slug])
+  @@index([ownerId])
+  @@map("organizations")
+}
+
+model OrgMembership {
+  id          String   @id @default(uuid()) @db.Uuid
+  orgId       String   @db.Uuid
+  userId      String   @db.Uuid
+  role        String
+  permissions String[] @default([])
+  joinedAt    DateTime @default(now())
+
+  org  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([orgId, userId])
+  @@index([orgId])
+  @@index([userId])
+  @@map("org_memberships")
+}
+
+// ==================== Projects ====================
+
+model Project {
+  id          String            @id @default(uuid()) @db.Uuid
+  name        String
+  description String            @default("")
+  status      ProjectStatus     @default(ACTIVE)
+  visibility  ProjectVisibility @default(PRIVATE)
+  stack       Json              @default("{}")
+  repo        Json?
+  orgId       String            @db.Uuid
+  ownerId     String            @db.Uuid
+  tags        String[]          @default([])
+  settings    Json              @default("{}")
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  org     Organization    @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  owner   User            @relation("ProjectOwner", fields: [ownerId], references: [id])
+  members ProjectMember[]
+  agents  Agent[]
+  tasks   Task[]
+  sandboxes Sandbox[]
+
+  @@index([orgId])
+  @@index([status])
+  @@index([ownerId])
+  @@map("projects")
+}
+
+enum ProjectStatus {
+  PLANNING
+  ACTIVE
+  PAUSED
+  COMPLETED
+  ARCHIVED
+}
+
+enum ProjectVisibility {
+  PRIVATE
+  ORGANIZATION
+  PUBLIC
+}
+
+model ProjectMember {
+  id        String   @id @default(uuid()) @db.Uuid
+  projectId String   @db.Uuid
+  userId    String   @db.Uuid
+  role      String
+  joinedAt  DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+  @@index([projectId])
+  @@index([userId])
+  @@map("project_members")
+}
+
+// ==================== Agents ====================
+
+model Agent {
+  id           String             @id @default(uuid()) @db.Uuid
+  name         String
+  description  String             @default("")
+  role         AgentRole          @default(DEVELOPER)
+  capabilities AgentCapability[]  @default([])
+  state        AgentState         @default(CREATED)
+  config       Json               @default("{}")
+  metrics      Json               @default("{}")
+  projectId    String             @db.Uuid
+  orgId        String             @db.Uuid
+  createdBy    String             @db.Uuid
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  project   Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  org       Organization @relation(fields: [orgId], references: [id])
+  tasks     Task[]
+  sandboxes Sandbox[]
+
+  @@index([projectId])
+  @@index([orgId])
+  @@index([state])
+  @@map("agents")
+}
+
+enum AgentState {
+  CREATED
+  CONFIGURED
+  IDLE
+  ASSIGNED
+  EXECUTING
+  PAUSED
+  COMPLETED
+  FAILED
+  ARCHIVED
+}
+
+enum AgentRole {
+  DEVELOPER
+  REVIEWER
+  TESTER
+  ARCHITECT
+  DEVOPS
+  RESEARCHER
+  LEAD
+  SPECIALIST
+}
+
+enum AgentCapability {
+  CODE_GENERATION
+  CODE_REVIEW
+  TESTING
+  DEBUGGING
+  DOCUMENTATION
+  REFACTORING
+  ARCHITECTURE
+  DEVOPS
+  PLANNING
+  RESEARCH
+}
+
+// ==================== Tasks ====================
+
+model Task {
+  id            String      @id @default(uuid()) @db.Uuid
+  title         String
+  description   String      @default("")
+  type          TaskType    @default(CUSTOM)
+  status        TaskStatus  @default(PENDING)
+  priority      TaskPriority @default(MEDIUM)
+  assigneeId    String?     @db.Uuid
+  projectId     String      @db.Uuid
+  workflowId    String?     @db.Uuid
+  parentTaskId  String?     @db.Uuid
+  dependencies  Json        @default("[]")
+  context       Json        @default("{}")
+  maxAttempts   Int         @default(3)
+  timeoutMs     Int         @default(300000)
+  startedAt     DateTime?
+  completedAt   DateTime?
+  dueDate       DateTime?
+  tags          String[]    @default([])
+  orgId         String      @db.Uuid
+  createdBy     String      @db.Uuid
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  project  Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  agent    Agent?  @relation(fields: [assigneeId], references: [id])
+
+  @@index([projectId])
+  @@index([status])
+  @@index([assigneeId])
+  @@index([priority])
+  @@index([orgId])
+  @@index([workflowId])
+  @@map("tasks")
+}
+
+enum TaskType {
+  IMPLEMENTATION
+  BUG_FIX
+  REFACTORING
+  TESTING
+  DOCUMENTATION
+  RESEARCH
+  CODE_REVIEW
+  DEPLOYMENT
+  ANALYSIS
+  CUSTOM
+}
+
+enum TaskStatus {
+  PENDING
+  ASSIGNED
+  IN_PROGRESS
+  BLOCKED
+  REVIEWING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum TaskPriority {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+}
+
+// ==================== Workflows ====================
+
+model WorkflowDefinition {
+  id           String           @id @default(uuid()) @db.Uuid
+  name         String
+  description  String           @default("")
+  version      String           @default("1.0.0")
+  steps        Json             @default("[]")
+  trigger      WorkflowTrigger  @default(MANUAL)
+  triggerConfig Json            @default("{}")
+  inputSchema   Json            @default("{}")
+  outputSchema  Json            @default("{}")
+  tags         String[]         @default([])
+  orgId        String           @db.Uuid
+  createdBy    String           @db.Uuid
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  org       Organization       @relation(fields: [orgId], references: [id])
+  instances WorkflowInstance[]
+
+  @@index([orgId])
+  @@index([trigger])
+  @@map("workflow_definitions")
+}
+
+enum WorkflowTrigger {
+  MANUAL
+  SCHEDULED
+  EVENT
+  WEBHOOK
+  API
+}
+
+model WorkflowInstance {
+  id                 String          @id @default(uuid()) @db.Uuid
+  definitionId       String          @db.Uuid
+  definitionVersion  String
+  status             WorkflowStatus  @default(PENDING)
+  input              Json            @default("{}")
+  output             Json?
+  context            Json            @default("{}")
+  stepResults        Json            @default("[]")
+  currentStepId      String?
+  startedAt          DateTime        @default(now())
+  completedAt        DateTime?
+  projectId          String          @db.Uuid
+  orgId              String          @db.Uuid
+  triggeredBy        String          @db.Uuid
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+
+  definition WorkflowDefinition @relation(fields: [definitionId], references: [id], onDelete: Cascade)
+
+  @@index([definitionId])
+  @@index([status])
+  @@index([projectId])
+  @@index([orgId])
+  @@map("workflow_instances")
+}
+
+enum WorkflowStatus {
+  PENDING
+  RUNNING
+  WAITING
+  COMPLETED
+  FAILED
+  CANCELLED
+  TIMED_OUT
+}
+
+// ==================== Memory ====================
+
+model MemoryEntry {
+  id              String      @id @default(uuid()) @db.Uuid
+  content         String      @db.Text
+  type            MemoryType  @default(SEMANTIC)
+  embedding       Float[]?
+  metadata        Json        @default("{}")
+  source          Json        @default("{}")
+  access          String      @default("private")
+  tags            String[]    @default([])
+  relatedMemoryIds String[]   @default([])
+  confidence      Float       @default(1.0)
+  decayFactor     Float       @default(1.0)
+  agentId         String      @db.Uuid
+  projectId       String      @db.Uuid
+  orgId           String      @db.Uuid
+  lastAccessedAt  DateTime    @default(now())
+  accessCount     Int         @default(0)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([agentId])
+  @@index([projectId])
+  @@index([type])
+  @@index([orgId])
+  @@index([tags])
+  @@index([lastAccessedAt])
+  @@index([embedding], name: "memory_embedding_idx") @index(type: Hnsw)
+  @@map("memory_entries")
+}
+
+enum MemoryType {
+  SEMANTIC
+  EPISODIC
+  PROJECT
+  TASK
+  CONVERSATION
+  PROCEDURAL
+  WORKING
+}
+
+// ==================== Sandbox ====================
+
+model Sandbox {
+  id              String         @id @default(uuid()) @db.Uuid
+  name            String
+  status          SandboxStatus  @default(PENDING)
+  runtime         SandboxRuntime @default(NODE_20)
+  config          Json           @default("{}")
+  agentId         String?        @db.Uuid
+  taskId          String?
+  projectId       String         @db.Uuid
+  orgId           String         @db.Uuid
+  podName         String?
+  ipAddress       String?
+  ports           Json           @default("[]")
+  startedAt       DateTime?
+  terminatedAt    DateTime?
+  lastHealthCheck DateTime?
+  healthStatus    String         @default("unknown")
+  exitCode        Int?
+  logs            String[]       @default([])
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  agent   Agent?  @relation(fields: [agentId], references: [id])
+
+  @@index([projectId])
+  @@index([status])
+  @@index([agentId])
+  @@map("sandboxes")
+}
+
+enum SandboxStatus {
+  PENDING
+  CREATING
+  RUNNING
+  PAUSED
+  DESTROYING
+  DESTROYED
+}
+
+enum SandboxRuntime {
+  NODE_20
+  PYTHON_3_11
+  PYTHON_3_12
+  RUST
+  GO_1_21
+  JAVA_21
+  DOCKER
+}
+
+model SandboxTemplate {
+  id            String         @id @default(uuid()) @db.Uuid
+  name          String
+  description   String         @default("")
+  runtime       SandboxRuntime @default(NODE_20)
+  prebuiltImage String
+  defaultConfig Json           @default("{}")
+  packages      String[]       @default([])
+  initScript    String?
+  orgId         String?        @db.Uuid
+  isPublic      Boolean        @default(false)
+  tags          String[]       @default([])
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([orgId])
+  @@index([runtime])
+  @@map("sandbox_templates")
+}
+
+// ==================== Audit ====================
+
+model AuditLog {
+  id         String    @id @default(uuid()) @db.Uuid
+  action     String
+  resource   String
+  resourceId String    @db.Uuid
+  userId     String?   @db.Uuid
+  orgId      String    @db.Uuid
+  projectId  String?   @db.Uuid
+  metadata   Json      @default("{}")
+  ipAddress  String?
+  userAgent  String?
+  timestamp  DateTime  @default(now())
+
+  user User?         @relation(fields: [userId], references: [id])
+  org  Organization  @relation(fields: [orgId], references: [id])
+
+  @@index([orgId])
+  @@index([userId])
+  @@index([resource])
+  @@index([timestamp])
+  @@index([action])
+  @@map("audit_logs")
+}
+
+// ==================== API Keys ====================
+
+model ApiKey {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String
+  keyHash     String
+  keyPrefix   String
+  permissions String[]  @default([])
+  scopes      String[]  @default([])
+  rateLimit   Int?
+  expiresAt   DateTime?
+  lastUsedAt  DateTime?
+  userId      String    @db.Uuid
+  orgId       String    @db.Uuid
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user User         @relation(fields: [userId], references: [id])
+  org  Organization @relation(fields: [orgId], references: [id])
+
+  @@index([keyPrefix])
+  @@index([userId])
+  @@index([orgId])
+  @@index([expiresAt])
+  @@map("api_keys")
+}

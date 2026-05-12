@@ -1,0 +1,60 @@
+{
+  "name": "@aasop/database",
+  "version": "0.1.0",
+  "description": "Database clients, schema, and repositories for AASOP",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./postgres": {
+      "import": "./dist/postgres/index.js",
+      "require": "./dist/postgres/index.cjs",
+      "types": "./dist/postgres/index.d.ts"
+    },
+    "./redis": {
+      "import": "./dist/redis/index.js",
+      "require": "./dist/redis/index.cjs",
+      "types": "./dist/redis/index.d.ts"
+    },
+    "./qdrant": {
+      "import": "./dist/qdrant/index.js",
+      "require": "./dist/qdrant/index.cjs",
+      "types": "./dist/qdrant/index.d.ts"
+    }
+  },
+  "files": ["dist", "prisma"],
+  "scripts": {
+    "build": "tsup src/index.ts src/postgres/index.ts src/redis/index.ts src/qdrant/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts src/postgres/index.ts src/redis/index.ts src/qdrant/index.ts --format cjs,esm --dts --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "clean": "rm -rf dist .turbo",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate",
+    "db:studio": "prisma studio",
+    "db:seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "kysely": "^0.27.0",
+    "pg": "^8.11.0",
+    "ioredis": "^5.3.0",
+    "@prisma/client": "^5.10.0",
+    "@qdrant/js-client-rest": "^1.8.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "prisma": "^5.10.0",
+    "@types/pg": "^8.11.0",
+    "tsx": "^4.7.0",
+    "eslint": "^8.57.0",
+    "@aasop/config": "workspace:*",
+    "@aasop/shared-kernel": "workspace:*"
+  }
+}

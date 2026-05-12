@@ -1,0 +1,12 @@
+{
+  "extends": "@aasop/config/tsconfig/base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@aasop/observability": ["./src/index.ts"],
+      "@aasop/observability/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}

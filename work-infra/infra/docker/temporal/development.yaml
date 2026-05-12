@@ -1,0 +1,51 @@
+frontend.enableClientVersionCheck:
+  - value: true
+    constraints: {}
+system.forceSearchAttributesCacheRefreshOnRead:
+  - value: false
+    constraints: {}
+limit.maxIDLength:
+  - value: 255
+    constraints: {}
+limit.maxActionsPerSignal:
+  - value: 64
+    constraints: {}
+history.historyMgrNumConns:
+  - value: 50
+    constraints: {}
+frontend.throttledLogRPS:
+  - value: 20
+    constraints: {}
+matching.minTasklistIdleTime:
+  - value: 1m
+    constraints: {}
+matching.maxTasklistIdleTime:
+  - value: 5m
+    constraints: {}
+matching.forwarderMaxOutstandingPolls:
+  - value: 1
+    constraints: {}
+matching.forwarderMaxOutstandingTasks:
+  - value: 1
+    constraints: {}
+matching.forwarderMaxRatePerSecond:
+  - value: 10
+    constraints: {}
+matching.forwarderMaxChildrenPerNode:
+  - value: 500
+    constraints: {}
+matching.numTaskqueueReadPartitions:
+  - value: 4
+    constraints: {}
+matching.numTaskqueueWritePartitions:
+  - value: 4
+    constraints: {}
+worker.BatcherRPS:
+  - value: 1000
+    constraints: {}
+worker.ParentCloseLimit:
+  - value: 1000
+    constraints: {}
+worker.ESProcessorFlushInterval:
+  - value: 1s
+    constraints: {}

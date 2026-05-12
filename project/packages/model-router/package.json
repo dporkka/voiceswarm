@@ -1,0 +1,26 @@
+{
+  "name": "@aasop/model-router",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "lint": "eslint src/**/*.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aasop/shared-kernel": "workspace:*",
+    "@aasop/observability": "workspace:*",
+    "openai": "^4.28.0",
+    "ioredis": "^5.3.2",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0",
+    "@types/node": "^20.11.0"
+  }
+}
