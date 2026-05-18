@@ -2,6 +2,7 @@
   "name": "@aasop/shared-kernel",
   "version": "0.1.0",
   "description": "Core types, schemas, and domain models for AASOP",
+  "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -34,6 +35,7 @@
     "zod": "^3.22.0"
   },
   "devDependencies": {
+    "@types/node": "^20.11.0",
     "tsup": "^8.0.0",
     "typescript": "^5.4.0",
     "eslint": "^8.57.0",

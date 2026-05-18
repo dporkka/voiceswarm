@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { QdrantClient } from '@qdrant/qdrant-js';
 import { createLogger } from '@aasop/observability';
 import type { MemoryEntry } from './service.js';

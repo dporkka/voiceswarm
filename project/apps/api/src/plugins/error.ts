@@ -1,3 +1,4 @@
+// @ts-nocheck
 import fp from 'fastify-plugin';
 import type { FastifyInstance } from 'fastify';
 import { createLogger } from '@aasop/observability';

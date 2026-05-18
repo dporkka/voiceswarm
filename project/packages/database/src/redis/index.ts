@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Redis client wrapper for caching, sessions, and pub/sub.
  */

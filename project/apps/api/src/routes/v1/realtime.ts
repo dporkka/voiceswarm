@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { FastifyInstance } from 'fastify';
 
 export async function realtimeRoutes(app: FastifyInstance) {

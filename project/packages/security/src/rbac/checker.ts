@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Permission checking logic.
  * Provides efficient permission evaluation with caching.

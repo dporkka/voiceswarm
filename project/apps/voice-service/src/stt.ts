@@ -129,7 +129,11 @@ export class SpeechToText {
       try {
         for await (const chunk of audioStream) {
           if (done) break;
-          connection.send(chunk);
+          const audioPayload = chunk.buffer.slice(
+            chunk.byteOffset,
+            chunk.byteOffset + chunk.byteLength
+          ) as ArrayBuffer;
+          connection.send(audioPayload);
         }
       } catch (error) {
         logger.error({ error: (error as Error).message }, 'Audio stream error');

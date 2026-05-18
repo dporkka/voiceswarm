@@ -22,13 +22,13 @@ const initialMessages: ChatMessageData[] = [
   {
     id: "msg-1",
     role: "assistant",
-    content: "Hello! I am the AASOP Orchestrator. How can I help you today? You can ask me to:
+    content: `Hello! I am the AASOP Orchestrator. How can I help you today? You can ask me to:
 
 - Create and assign tasks
 - Check agent status
 - Review code changes
 - Run tests
-- Deploy applications",
+- Deploy applications`,
     timestamp: new Date(Date.now() - 600000),
   },
 ];

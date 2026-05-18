@@ -151,3 +151,24 @@ export interface InferenceMetrics {
   cached: boolean;
   timestamp: Date;
 }
+
+/** Simplified routing request used by the model-router package. */
+export interface RouteRequest {
+  prompt: string;
+  model?: string;
+  systemPrompt?: string;
+  structured?: boolean;
+  temperature?: number;
+  maxTokens?: number;
+  metadata?: Record<string, unknown>;
+}
+
+/** Simplified routing result returned by the model-router package. */
+export interface RouteResult {
+  content: string;
+  usage: { input: number; output: number; total: number };
+  provider: string;
+  model: string;
+  latency: number;
+  cost: number;
+}

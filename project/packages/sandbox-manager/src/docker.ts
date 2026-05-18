@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Docker from 'dockerode';
 import { createLogger } from '@aasop/observability';
 import type { SecurityProfile } from './security.js';

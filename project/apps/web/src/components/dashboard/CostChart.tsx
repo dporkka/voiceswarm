@@ -77,7 +77,17 @@ export function CostChart() {
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 10%, 18%)" />
               <XAxis dataKey="hour" tick={{ fontSize: 11, fill: "#6b7280" }} />
-              <YAxis tick={{ fontSize: 11, fill: "#6b7280" }} />
+              <YAxis
+                yAxisId="cost"
+                tick={{ fontSize: 11, fill: "#6b7280" }}
+                tickFormatter={(v) => `$${v}`}
+              />
+              <YAxis
+                yAxisId="tokens"
+                orientation="right"
+                tick={{ fontSize: 11, fill: "#6b7280" }}
+                tickFormatter={(v) => `${v}k`}
+              />
               <Tooltip content={<CustomTooltip />} />
               <Area
                 type="monotone"
@@ -86,6 +96,7 @@ export function CostChart() {
                 strokeWidth={2}
                 fill="url(#costGrad)"
                 name="Cost ($)"
+                yAxisId="cost"
               />
               <Area
                 type="monotone"
@@ -94,7 +105,7 @@ export function CostChart() {
                 strokeWidth={1.5}
                 fill="url(#tokenGrad)"
                 name="Tokens (k)"
-                yAxisId={1}
+                yAxisId="tokens"
               />
             </AreaChart>
           </ResponsiveContainer>

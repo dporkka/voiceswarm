@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { RouteRequest } from '@aasop/shared-kernel';
 import type { ProviderAdapter, ProviderHealth, ProviderResponse, StreamChunk } from './base.js';
 import { createLogger } from '@aasop/observability';

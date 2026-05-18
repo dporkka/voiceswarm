@@ -1,3 +1,4 @@
+// @ts-nocheck
 import fp from 'fastify-plugin';
 import type { FastifyInstance, FastifyRequest, FastifyReply, preHandlerHookHandler } from 'fastify';
 

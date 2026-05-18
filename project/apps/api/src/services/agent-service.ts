@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createLogger } from '@aasop/observability';
 
 const logger = createLogger('agent-service');

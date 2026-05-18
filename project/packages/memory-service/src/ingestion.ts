@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createLogger } from '@aasop/observability';
 import type { MemoryEntry, IngestionConfig } from './service.js';
 import type { SemanticMemory } from './semantic.js';

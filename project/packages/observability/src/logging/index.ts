@@ -2,7 +2,7 @@
  * Pino structured logging for AASOP services.
  */
 
-import pino, { type Logger, type LoggerOptions } from 'pino';
+import { pino, type Logger, type LoggerOptions } from 'pino';
 import { z } from 'zod';
 
 /** Log level */
@@ -54,8 +54,9 @@ export function initLogging(config?: Partial<LoggerConfig>): Logger {
     };
   }
 
-  globalLogger = pino(options);
-  return globalLogger;
+  const logger = pino(options);
+  globalLogger = logger;
+  return logger;
 }
 
 /** Get the global logger */
@@ -75,6 +76,11 @@ export function getChildLogger(bindings: Record<string, unknown>): Logger {
 export function createServiceLogger(service: string, config?: Partial<LoggerConfig>): Logger {
   const cfg = { ...config, service };
   return initLogging(cfg);
+}
+
+/** Backwards-compatible service logger factory used by platform packages. */
+export function createLogger(service: string, config?: Partial<LoggerConfig>): Logger {
+  return createServiceLogger(service, config);
 }
 
 /** Reset the global logger (useful for testing) */
@@ -239,10 +245,10 @@ export function logError(
   getLogger().error(
     {
       err: {
+        ...error,
         message: error.message,
         stack: error.stack,
         name: error.name,
-        ...error,
       },
       ...context,
     },

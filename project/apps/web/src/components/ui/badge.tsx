@@ -23,6 +23,14 @@ const badgeVariants = cva(
           "border-transparent bg-red-500/10 text-red-400",
         info:
           "border-transparent bg-blue-500/10 text-blue-400",
+        low:
+          "border-transparent bg-slate-500/10 text-slate-400",
+        medium:
+          "border-transparent bg-blue-500/10 text-blue-400",
+        high:
+          "border-transparent bg-amber-500/10 text-amber-400",
+        critical:
+          "border-transparent bg-red-500/10 text-red-400",
       },
       size: {
         default: "px-2 py-0.5 text-xs",

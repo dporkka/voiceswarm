@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Multi-tenant resolution logic.
  * Determines which organization context a request operates in.

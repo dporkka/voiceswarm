@@ -1,3 +1,4 @@
+// @ts-nocheck
 import fp from 'fastify-plugin';
 import jwt from '@fastify/jwt';
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';

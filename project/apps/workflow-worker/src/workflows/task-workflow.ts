@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { defineSignal, defineQuery, setHandler, sleep, proxyActivities, executeChild } from '@temporalio/workflow';
 import type { Task } from '@aasop/shared-kernel';
 

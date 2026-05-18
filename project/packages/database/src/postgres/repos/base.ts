@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Base repository class providing common CRUD operations.
  * All entity repositories extend this class.

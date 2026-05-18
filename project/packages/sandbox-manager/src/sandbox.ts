@@ -18,7 +18,7 @@ export class Sandbox {
 
   async configure(config: SandboxConfig): Promise<void> {
     if (config.workingDir) {
-      await this.exec('mkdir', { args: ['-p', config.workingDir] });
+      await this.execute('mkdir', { args: ['-p', config.workingDir] });
     }
   }
 

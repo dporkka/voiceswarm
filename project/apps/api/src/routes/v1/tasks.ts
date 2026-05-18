@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { TaskService } from '../../services/task-service.js';

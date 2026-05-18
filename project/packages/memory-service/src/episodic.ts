@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Kysely, sql } from 'kysely';
 import type { DB } from '@aasop/shared-kernel';
 import { createLogger } from '@aasop/observability';

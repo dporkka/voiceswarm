@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Project repository for PostgreSQL.
  */

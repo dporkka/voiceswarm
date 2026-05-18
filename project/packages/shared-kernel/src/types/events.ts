@@ -3,6 +3,8 @@
  * All inter-service communication uses CloudEvents format.
  */
 
+import { randomUUID } from 'node:crypto';
+
 export enum EventType {
   // Agent events
   AGENT_CREATED = 'aasop.agent.created',
@@ -117,16 +119,19 @@ export function createCloudEvent<T>(
     extensions?: Record<string, unknown>;
   },
 ): CloudEvent<T> {
-  return {
+  const event: CloudEvent<T> = {
     specversion: '1.0',
     type,
     source,
-    id: options?.id ?? crypto.randomUUID(),
+    id: options?.id ?? randomUUID(),
     time: new Date(),
     datacontenttype: 'application/json',
-    dataschema: options?.dataschema,
-    subject: options?.subject,
     data,
-    extensions: options?.extensions,
   };
+
+  if (options?.dataschema !== undefined) event.dataschema = options.dataschema;
+  if (options?.subject !== undefined) event.subject = options.subject;
+  if (options?.extensions !== undefined) event.extensions = options.extensions;
+
+  return event;
 }

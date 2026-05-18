@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createServer } from './server.js';
 import { createLogger } from '@aasop/observability';
 

@@ -9,7 +9,7 @@ import {
   type UseQueryOptions,
   type UseMutationOptions,
 } from "@tanstack/react-query";
-import { useState, type ReactNode } from "react";
+import { createElement, useState, type ReactNode } from "react";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -89,11 +89,7 @@ export function createQueryClient() {
 export function ApiProvider({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => createQueryClient());
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
-  );
+  return createElement(QueryClientProvider, { client: queryClient }, children);
 }
 
 export { useQuery, useMutation, useQueryClient };

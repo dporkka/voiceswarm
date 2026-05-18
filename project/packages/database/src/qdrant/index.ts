@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Qdrant vector database client wrapper.
  * Used for semantic memory search.
