@@ -16,7 +16,7 @@
     "@aasop/observability": "workspace:*",
     "dockerode": "^4.0.2",
     "tar-stream": "^3.1.7",
-    "uuid": "^9.0.1",
+    "uuid": "^14.0.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
