@@ -15,7 +15,7 @@
     "@aasop/observability": "workspace:*",
     "@deepgram/sdk": "^3.2.0",
     "openai": "^4.28.0",
-    "ws": "^8.16.0",
+    "ws": "^8.21.0",
     "pino": "^8.17.0"
   },
   "devDependencies": {
