@@ -28,16 +28,16 @@ AASOP is a full-stack platform for running an autonomous software organization. 
 
 ## Application areas
 
-| Route | Purpose |
-| --- | --- |
-| `/` | Operations dashboard for agents, tasks, activity, and platform metrics |
-| `/agents` | Manage the autonomous agent fleet and inspect agent types |
-| `/tasks` | Organize work items and execution status across the platform |
-| `/workflows` | Visualize workflow pipelines and orchestration steps |
-| `/projects` | Track project delivery progress and active initiatives |
-| `/memory` | Inspect memory systems and retained context |
-| `/observability` | Review metrics, logs, traces, and cost dashboards |
-| `/settings` | Configure organization, models, notifications, and security |
+| Route            | Purpose                                                                |
+| ---------------- | ---------------------------------------------------------------------- |
+| `/`              | Operations dashboard for agents, tasks, activity, and platform metrics |
+| `/agents`        | Manage the autonomous agent fleet and inspect agent types              |
+| `/tasks`         | Organize work items and execution status across the platform           |
+| `/workflows`     | Visualize workflow pipelines and orchestration steps                   |
+| `/projects`      | Track project delivery progress and active initiatives                 |
+| `/memory`        | Inspect memory systems and retained context                            |
+| `/observability` | Review metrics, logs, traces, and cost dashboards                      |
+| `/settings`      | Configure organization, models, notifications, and security            |
 
 ## Architecture overview
 
@@ -99,15 +99,19 @@ pnpm test
 ## FAQ
 
 ### What does AASOP do?
+
 AASOP helps teams run autonomous software workflows by combining AI agents, tasks, durable workflows, observability, memory, and voice-enabled operations in one platform.
 
 ### Who is AASOP built for?
+
 AASOP is built for engineering organizations, platform teams, AI product teams, and developer-experience teams that want a centralized control plane for agent-driven software work.
 
 ### What makes AASOP different from a simple chatbot or coding assistant?
+
 AASOP is designed as an operational platform, not a single assistant. It coordinates multiple agents, structured workflows, realtime monitoring, project context, and voice-enabled execution.
 
 ### Does AASOP support voice workflows?
+
 Yes. The platform includes a dedicated voice service for speech processing, conversational orchestration, and voice-driven operational experiences.
 
 ## Repository structure

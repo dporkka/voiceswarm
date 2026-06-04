@@ -3,7 +3,9 @@ import "./globals.css";
 import { ApiProvider } from "@/lib/api/client";
 import { MainLayout } from "@/components/layout/MainLayout";
 
-const siteUrl = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000");
+const siteUrl = new URL(
+  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+);
 const appName = "AASOP";
 const seoTitle = "AASOP | Autonomous agent orchestration for software teams";
 const seoDescription =

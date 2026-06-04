@@ -10,6 +10,11 @@ export default function manifest(): MetadataRoute.Manifest {
     display: "standalone",
     background_color: "#09090b",
     theme_color: "#09090b",
-    categories: ["developer tools", "productivity", "artificial intelligence", "software development"],
+    categories: [
+      "developer tools",
+      "productivity",
+      "artificial intelligence",
+      "software development",
+    ],
   };
 }
