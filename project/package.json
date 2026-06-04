@@ -2,7 +2,7 @@
   "name": "@aasop/root",
   "private": true,
   "version": "0.1.0",
-  "description": "Autonomous Agentic Software Organization Platform",
+  "description": "AI agent orchestration platform for autonomous software development, workflow automation, realtime collaboration, and voice-enabled operations",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -18,5 +18,15 @@
     "typescript": "^5.4.0"
   },
   "packageManager": "pnpm@9.0.0",
-  "engines": { "node": ">=20.0.0" }
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "ai-agent-platform",
+    "autonomous-software-development",
+    "workflow-automation",
+    "developer-platform",
+    "voice-orchestration",
+    "realtime-observability"
+  ]
 }

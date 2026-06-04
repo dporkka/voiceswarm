@@ -53,5 +53,14 @@
     "tailwindcss-animate": "^1.0.7",
     "postcss": "^8.4.38",
     "autoprefixer": "^10.4.19"
-  }
+  },
+  "description": "Next.js dashboard for AI agent orchestration, workflow management, realtime observability, and autonomous software operations",
+  "keywords": [
+    "nextjs",
+    "ai-agents",
+    "workflow-dashboard",
+    "developer-tools",
+    "observability",
+    "software-automation"
+  ]
 }
